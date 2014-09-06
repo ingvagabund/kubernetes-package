@@ -2,12 +2,12 @@
 %global goname		go-dockerclient
 %global import_path	github.com/fsouza/%{goname}
 %global gopath		%{_datadir}/gocode
-%global commit		9061c8580ba4374f24de44bcf9e8b77ce0553933
+%global commit		0dbb508e94dd899a6743d035d8f249c7634d26da
 %global shortcommit	%(c=%{commit}; echo ${c:0:8})
 
 Name:		golang-github-fsouza-%{goname}
 Version:	0
-Release:	0.5.git%{shortcommit}%{?dist}
+Release:	0.6.git%{shortcommit}%{?dist}
 Summary:	Client for the Docker remote API
 License:	BSD
 URL:		https://%{import_path}
@@ -58,6 +58,9 @@ install -t %{buildroot}/%{gopath}/src/%{import_path}/testing testing/*.go
 %{gopath}/src/%{import_path}/testing/*.go
 
 %changelog
+* Sat Sep 06 2014 Eric Paris <eparis@redhat.com - 0-0.6.git0dbb508e
+- Bump to upstream 0dbb508e94dd899a6743d035d8f249c7634d26da
+
 * Wed Aug 20 2014 Eric Paris <eparis@redhat.com - 0-0.5.git9061c858
 - Bump to upstream 9061c8580ba4374f24de44bcf9e8b77ce0553933
 
