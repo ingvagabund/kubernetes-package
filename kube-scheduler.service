@@ -1,0 +1,14 @@
+[Unit]
+Description=Kubernetes Proxy
+
+[Service]
+EnvironmentFile=/etc/kubernetes/config
+EnvironmentFile=/etc/kubernetes/apiserver
+EnvironmentFile=/etc/kubernetes/scheduler
+ExecStart=/usr/bin/kube-scheduler \
+            --logtostderr=${KUBE_LOGTOSTDERR} \
+	    --v=${KUBE_LOG_LEVEL} \
+	    --master=${KUBE_MASTER}
+
+[Install]
+WantedBy=multi-user.target

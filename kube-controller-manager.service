@@ -3,6 +3,7 @@ Description=Kubernetes Controller Manager
 
 [Service]
 EnvironmentFile=/etc/kubernetes/config
+EnvironmentFile=/etc/kubernetes/apiserver
 EnvironmentFile=/etc/kubernetes/controller-manager
 User=kube
 ExecStart=/usr/bin/kube-controller-manager \

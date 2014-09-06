@@ -1,5 +1,8 @@
-3f90f8b012cf0c84e07beb6c3267ee3b0297ead4f9cf4c88eea57e56469804cd  0001-Use-go-build-not-go-install-because-of-golang-issue.patch
-f340ef2ca332f2ae5383883725267e09d3882aa582d5fec56eb574031394d117  0002-Respect-version-passed-in-via-environment-variable.patch
-7cd47c1bd0d78057f9ec2e42aed42168c27a5d658189ad48c532078987b2e059  0003-remove-all-third-party-software.patch
-35197276f818bf747088c0b24625505bcd0fcc430d5607b9729f240ace5e1328  kubernetes-aeea1b1e.tar.gz
-9e44f04937ff8e15bb75d54fa3110035e237cc84c40dbaf7dfd06a60ae562a21  kubernetes.spec
+31d9a967dd20a06a896f4c47fbe42b0c3cdf01074cc6706894e81a8067c19d79  0001-Move-default-target-list-from-build_go-to-config_go.patch
+eb47510549cbc73b697e4ef4beb93b379a07d36e2a4557e7f6c02ee42cf791a4  0002-function-to-turn-list-of-targets-to-list-of-go-packa.patch
+1ed402ae99b05818727befad20523787247e27a5d5a4c763923b508edde1b228  0003-more-stuff.patch
+2bff86563a873eb7bcc57c438fe94eeab10bcc1cce19516e904e8efa4be5d522  0004-Use-go-build-not-go-install-because-of-golang-issue.patch
+ec532d9a5b237b2aae95a52fdd8698560fc643dd1b708fc66f403aa8dd727a59  0005-Do-not-ignore-local-GOPATH-ignore-3rd-party-deps.patch
+de1417b1c0542824a355af2a29037236c1dfa145f08649a58214d7cf319a2eb7  0006-remove-all-third-party-software.patch
+eddbc0f9fdb1220da8273440ec5a1bfea83917584fc6a2052cffb8d266550596  kubernetes-6ebe69a8.tar.gz
+e6f586b50dc11cb5530ed48af75022d3f78048e0ee95439d5d9bbc766aeb64b6  kubernetes.spec

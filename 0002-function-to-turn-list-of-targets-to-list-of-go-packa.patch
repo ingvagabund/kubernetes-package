@@ -1,0 +1,51 @@
+From d3df5680e26709d9fd9d5ab6369dfabe46fd3c76 Mon Sep 17 00:00:00 2001
+From: Eric Paris <eparis@redhat.com>
+Date: Fri, 5 Sep 2014 13:38:05 -0400
+Subject: [PATCH 2/6] function to turn list of targets to list of go packages
+
+---
+ hack/build-go.sh  |  5 +----
+ hack/config-go.sh | 11 +++++++++++
+ 2 files changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/hack/build-go.sh b/hack/build-go.sh
+index a011ed8..d3800fc 100755
+--- a/hack/build-go.sh
++++ b/hack/build-go.sh
+@@ -51,10 +51,7 @@ if [[ ${#targets[@]} -eq 0 ]]; then
+   targets=($(kube::default_build_targets))
+ fi
+ 
+-binaries=()
+-for target in ${targets[@]}; do
+-  binaries+=("${KUBE_GO_PACKAGE}/${target}")
+-done
++binaries=($(kube::binaries_from_targets "${targets[@]}"))
+ 
+ echo "Building local go components"
+ # Note that the flags to 'go build' are duplicated in the salt build setup
+diff --git a/hack/config-go.sh b/hack/config-go.sh
+index 386ddc9..92dda10 100644
+--- a/hack/config-go.sh
++++ b/hack/config-go.sh
+@@ -126,6 +126,17 @@ kube::default_build_targets() {
+   )
+   echo "${targets[@]}"
+ }
++
++# kube::binaries_from_targets take a list of build targets and return the
++# full go package to be built
++kube::binaries_from_targets() {
++  targets=($@)
++  binaries=()
++  for target in ${targets[@]}; do
++    binaries+=("${KUBE_GO_PACKAGE}/${target}")
++  done
++  echo "${binaries[@]}"
++}
+ # --- Environment Variables ---
+ 
+ # KUBE_REPO_ROOT  - Path to the top of the build tree.
+-- 
+1.9.3
+

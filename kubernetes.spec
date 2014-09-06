@@ -2,36 +2,48 @@
 %global debug_package	%{nil}
 %global gopath		%{_datadir}/gocode
 %global import_path	github.com/GoogleCloudPlatform/kubernetes
-%global commit		aeea1b1e06ef2342942eead2e19be37333922a91
+%global commit		6ebe69a8751508c11d0db4dceb8ecab0c2c7314a
 %global shortcommit	%(c=%{commit}; echo ${c:0:8})
 
 #binaries which should be called kube-*
-%global prefixed_binaries proxy apiserver controller-manager
+%global prefixed_binaries proxy apiserver controller-manager scheduler
 #binaries which should not be renamed at all
 %global nonprefixed_binaries kubelet kubecfg
 #all of the above
 %global binaries	%{prefixed_binaries} %{nonprefixed_binaries}
 
+#trying to reuse the build tools from the project means we must have bash
+%global _buildshell	/bin/bash
+
 Name:		kubernetes
-Version:	0
-Release:	0.0.19.git%{shortcommit}%{?dist}
+Version:	0.1
+Release:	0.2.1.git%{shortcommit}%{?dist}
 Summary:	Kubernetes container management
 License:	ASL 2.0
 URL:		https://github.com/GoogleCloudPlatform/kubernetes
 ExclusiveArch:	x86_64
 Source0:	https://github.com/GoogleCloudPlatform/kubernetes/archive/%{commit}/kubernetes-%{shortcommit}.tar.gz
-Source1:	config
-Source2:	apiserver
-Source3:	controller-manager
-Source4:	proxy
-Source5:	kubelet
-Source6:	kube-apiserver.service
-Source7:	kube-controller-manager.service
-Source8:	kube-proxy.service
-Source9:	kubelet.service
-Patch1:		0001-Use-go-build-not-go-install-because-of-golang-issue.patch
-Patch2:		0002-Respect-version-passed-in-via-environment-variable.patch
-Patch3:		0003-remove-all-third-party-software.patch
+
+#config files
+Source10:	config
+Source11:	apiserver
+Source12:	controller-manager
+Source13:	proxy
+Source14:	kubelet
+Source15:	scheduler
+#service files
+Source20:	kube-apiserver.service
+Source21:	kube-controller-manager.service
+Source22:	kube-proxy.service
+Source23:	kubelet.service
+Source24:	kube-scheduler.service
+
+Patch1:		0001-Move-default-target-list-from-build_go-to-config_go.patch
+Patch2:		0002-function-to-turn-list-of-targets-to-list-of-go-packa.patch
+Patch3:		0003-more-stuff.patch
+Patch4:		0004-Use-go-build-not-go-install-because-of-golang-issue.patch
+Patch5:		0005-Do-not-ignore-local-GOPATH-ignore-3rd-party-deps.patch
+Patch6:		0006-remove-all-third-party-software.patch
 
 Requires:	/usr/bin/docker
 Requires:	etcd
@@ -55,7 +67,7 @@ BuildRequires:	golang(code.google.com/p/go.net)
 BuildRequires:	golang(code.google.com/p/goauth2)
 BuildRequires:	golang(code.google.com/p/go-uuid)
 BuildRequires:	golang(code.google.com/p/google-api-go-client)
-BuildRequires:	golang(github.com/fsouza/go-dockerclient)
+BuildRequires:	golang(github.com/fsouza/go-dockerclient) > 0-0.6
 BuildRequires:	golang(github.com/golang/glog)
 BuildRequires:	golang(github.com/stretchr/objx)
 BuildRequires:	golang(github.com/stretchr/testify)
@@ -68,23 +80,26 @@ BuildRequires:	golang(github.com/google/cadvisor)
 %prep
 %autosetup -Sgit -n %{name}-%{commit}
 
-# FIXME (if we can)
-# Unable to remove go-dockerclient-copiedstructs because this is not really
-# a third party repo, it is a copy of go-dockerclient::container.go with some
-# yaml annotation which they use for testing and I think marshalling and
-# unmashalling....
-# So instead, just explode if there is anything left other than this one...
-FILES=`find third_party/src -type f`
-if [[ $FILES != "third_party/src/github.com/fsouza/go-dockerclient-copiedstructs/container.go" ]]; then
-	echo "UNPACKED THIRD PARTY SOFTWARE FOUND!"
-	exit 1
-fi
-
 %build
-export git_commit="%{shortcommit}-dirty"
-export GOPATH=%{gopath}
+export KUBE_GIT_COMMIT=%{commit}
+export KUBE_GIT_TREE_STATE="dirty"
+export KUBE_GIT_VERSION=v%{version}
 
-hack/build-go.sh
+. hack/config-go.sh
+version_ldflags=$(kube::version_ldflags)
+export GOPATH=${KUBE_TARGET}:%{gopath}
+
+targets=($(kube::default_build_targets))
+binaries=($(kube::binaries_from_targets "${targets[@]}"))
+
+for binary in ${binaries[@]}; do
+  bin=$(basename "${binary}")
+  echo "+++ Building ${bin}"
+  go build -o "${KUBE_TARGET}/bin/${bin}" \
+        "${goflags[@]:+${goflags[@]}}" \
+        -ldflags "${version_ldflags}" \
+        "${binary}"
+done
 
 %check
 export GOPATH=%{gopath}
@@ -97,20 +112,20 @@ hack/test-cmd.sh
 install -m 755 -d %{buildroot}%{_bindir}
 for bin in %{prefixed_binaries}; do
   echo "+++ INSTALLING ${bin}"
-  install -p -m 755 output/go/bin/${bin} %{buildroot}%{_bindir}/kube-${bin}
+  install -p -m 755 _output/go/bin/${bin} %{buildroot}%{_bindir}/kube-${bin}
 done
 for bin in %{nonprefixed_binaries}; do
   echo "+++ INSTALLING ${bin}"
-  install -p -m 755 output/go/bin/${bin} %{buildroot}%{_bindir}/${bin}
+  install -p -m 755 _output/go/bin/${bin} %{buildroot}%{_bindir}/${bin}
 done
 
 # install config files
 install -d -m 0755 $RPM_BUILD_ROOT%{_sysconfdir}/kubernetes
-install -m 644 -t $RPM_BUILD_ROOT%{_sysconfdir}/kubernetes %{SOURCE1} %{SOURCE2} %{SOURCE3} %{SOURCE4} %{SOURCE5}
+install -m 644 -t $RPM_BUILD_ROOT%{_sysconfdir}/kubernetes %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} %{SOURCE15}
 
 # install service files
 install -d -m 0755 $RPM_BUILD_ROOT%{_unitdir}
-install -m 0644 -t $RPM_BUILD_ROOT%{_unitdir} %{SOURCE6} %{SOURCE7} %{SOURCE8} %{SOURCE9}
+install -m 0644 -t $RPM_BUILD_ROOT%{_unitdir} %{SOURCE20} %{SOURCE21} %{SOURCE22} %{SOURCE23} %{SOURCE24}
 
 %files
 %defattr(-,root,root,-)
@@ -122,21 +137,25 @@ install -m 0644 -t $RPM_BUILD_ROOT%{_unitdir} %{SOURCE6} %{SOURCE7} %{SOURCE8} %
 %config(noreplace) %{_sysconfdir}/kubernetes/controller-manager
 %config(noreplace) %{_sysconfdir}/kubernetes/proxy
 %config(noreplace) %{_sysconfdir}/kubernetes/kubelet
+%config(noreplace) %{_sysconfdir}/kubernetes/scheduler
 
 %pre
 getent group kube >/dev/null || groupadd -r kube
 getent passwd kube >/dev/null || useradd -r -g kube -d / -s /sbin/nologin \
         -c "Kubernetes user" kube
 %post
-%systemd_post %{basename:%{SOURCE6}} %{basename:%{SOURCE7}} %{basename:%{SOURCE8}} %{basename:%{SOURCE9}}
+%systemd_post %{basename:%{SOURCE20}} %{basename:%{SOURCE21}} %{basename:%{SOURCE22}} %{basename:%{SOURCE22}} %{basename:%{SOURCE24}}
 
 %preun
-%systemd_preun %{basename:%{SOURCE6}} %{basename:%{SOURCE7}} %{basename:%{SOURCE8}} %{basename:%{SOURCE9}}
+%systemd_preun %{basename:%{SOURCE20}} %{basename:%{SOURCE21}} %{basename:%{SOURCE22}} %{basename:%{SOURCE23}} %{basename:%{SOURCE24}}
 
 %postun
 %systemd_postun
 
 %changelog
+* Sat Sep 06 2014 Eric Paris <eparis@redhat.com - 0.1-0.1.0.git6ebe69a8
+- Bump to upstream 6ebe69a8751508c11d0db4dceb8ecab0c2c7314a
+
 * Wed Aug 13 2014 Eric Paris <eparis@redhat.com>
 - update to upstream
 - redo build to use project scripts

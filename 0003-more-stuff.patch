@@ -1,0 +1,26 @@
+From 118e88f5d0aa6abe739498b1d0f8c077d682ee86 Mon Sep 17 00:00:00 2001
+From: Eric Paris <eparis@redhat.com>
+Date: Sat, 6 Sep 2014 11:39:59 -0400
+Subject: [PATCH 3/6] more stuff....
+
+---
+ hack/build-go.sh | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/hack/build-go.sh b/hack/build-go.sh
+index d3800fc..a0b3ad9 100755
+--- a/hack/build-go.sh
++++ b/hack/build-go.sh
+@@ -51,7 +51,8 @@ if [[ ${#targets[@]} -eq 0 ]]; then
+   targets=($(kube::default_build_targets))
+ fi
+ 
+-binaries=($(kube::binaries_from_targets "${targets[@]}"))
++#binaries=($(kube::binaries_from_targets "${targets[@]}"))
++binaries=("${targets[@]/#/${KUBE_GO_PACKAGE}/}")
+ 
+ echo "Building local go components"
+ # Note that the flags to 'go build' are duplicated in the salt build setup
+-- 
+1.9.3
+
