@@ -1,9 +1,8 @@
 #debuginfo not supported with Go
 %global debug_package	%{nil}
-%global gopath		%{_datadir}/gocode
 %global import_path	github.com/GoogleCloudPlatform/kubernetes
 %global commit		6ebe69a8751508c11d0db4dceb8ecab0c2c7314a
-%global shortcommit	%(c=%{commit}; echo ${c:0:8})
+%global shortcommit	%(c=%{commit}; echo ${c:0:7})
 
 #binaries which should be called kube-*
 %global prefixed_binaries proxy apiserver controller-manager scheduler
@@ -12,12 +11,9 @@
 #all of the above
 %global binaries	%{prefixed_binaries} %{nonprefixed_binaries}
 
-#trying to reuse the build tools from the project means we must have bash
-%global _buildshell	/bin/bash
-
 Name:		kubernetes
 Version:	0.1
-Release:	0.2.2.git%{shortcommit}%{?dist}
+Release:	0.4.git%{shortcommit}%{?dist}
 Summary:	Kubernetes container management
 License:	ASL 2.0
 URL:		https://github.com/GoogleCloudPlatform/kubernetes
@@ -120,24 +116,24 @@ for bin in %{nonprefixed_binaries}; do
 done
 
 # install config files
-install -d -m 0755 $RPM_BUILD_ROOT%{_sysconfdir}/kubernetes
-install -m 644 -t $RPM_BUILD_ROOT%{_sysconfdir}/kubernetes %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} %{SOURCE15}
+install -d -m 0755 %{buildroot}%{_sysconfdir}/%{name}
+install -m 644 -t %{buildroot}%{_sysconfdir}/%{name} %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} %{SOURCE15}
 
 # install service files
-install -d -m 0755 $RPM_BUILD_ROOT%{_unitdir}
-install -m 0644 -t $RPM_BUILD_ROOT%{_unitdir} %{SOURCE20} %{SOURCE21} %{SOURCE22} %{SOURCE23} %{SOURCE24}
+install -d -m 0755 %{buildroot}%{_unitdir}
+install -m 0644 -t %{buildroot}%{_unitdir} %{SOURCE20} %{SOURCE21} %{SOURCE22} %{SOURCE23} %{SOURCE24}
 
 %files
-%defattr(-,root,root,-)
 %doc README.md
 %{_bindir}/*
 %{_unitdir}/*.service
-%config(noreplace) %{_sysconfdir}/kubernetes/config
-%config(noreplace) %{_sysconfdir}/kubernetes/apiserver
-%config(noreplace) %{_sysconfdir}/kubernetes/controller-manager
-%config(noreplace) %{_sysconfdir}/kubernetes/proxy
-%config(noreplace) %{_sysconfdir}/kubernetes/kubelet
-%config(noreplace) %{_sysconfdir}/kubernetes/scheduler
+%dir %{_sysconfdir}/%{name}
+%config(noreplace) %{_sysconfdir}/%{name}/config
+%config(noreplace) %{_sysconfdir}/%{name}/apiserver
+%config(noreplace) %{_sysconfdir}/%{name}/controller-manager
+%config(noreplace) %{_sysconfdir}/%{name}/proxy
+%config(noreplace) %{_sysconfdir}/%{name}/kubelet
+%config(noreplace) %{_sysconfdir}/%{name}/scheduler
 
 %pre
 getent group kube >/dev/null || groupadd -r kube
@@ -153,6 +149,20 @@ getent passwd kube >/dev/null || useradd -r -g kube -d / -s /sbin/nologin \
 %systemd_postun
 
 %changelog
+* Mon Sep 08 2014 Lokesh Mandvekar <lsm5@fedoraproject.org> - 0.1-0.4.git6ebe69a
+- prefer autosetup instead of setup (revert setup change in 0-0.3.git)
+https://fedoraproject.org/wiki/Autosetup_packaging_draft
+- revert version number to 0.1
+
+* Mon Sep 08 2014 Lokesh Mandvekar <lsm5@fedoraproject.org> - 0-0.3.git6ebe69a
+- gopath defined in golang package already
+- package owns /etc/kubernetes
+- bash dependency implicit
+- keep buildroot/$RPM_BUILD_ROOT macros consistent
+- replace with macros wherever possible
+- set version, release and source tarball prep as per
+https://fedoraproject.org/wiki/Packaging:SourceURL#Github
+
 * Mon Sep 08 2014 Eric Paris <eparis@redhat.com>
 - make services restart automatically on error
 
