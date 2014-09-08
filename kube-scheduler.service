@@ -1,5 +1,5 @@
 [Unit]
-Description=Kubernetes Proxy
+Description=Kubernetes Scheduler
 
 [Service]
 EnvironmentFile=/etc/kubernetes/config
