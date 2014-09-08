@@ -13,6 +13,7 @@ ExecStart=/usr/bin/kubelet \
             --address=${MINION_ADDRESS} \
             --port=${MINION_PORT} \
 	    --hostname_override=${MINION_HOSTNAME}
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target

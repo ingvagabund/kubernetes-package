@@ -13,6 +13,7 @@ ExecStart=/usr/bin/kube-apiserver \
             --port=${KUBE_API_PORT} \
             --machines=${MINION_ADDRESSES} \
 	    --minion_port=${MINION_PORT}
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target

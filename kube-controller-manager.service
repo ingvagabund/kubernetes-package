@@ -10,6 +10,7 @@ ExecStart=/usr/bin/kube-controller-manager \
             --logtostderr=${KUBE_LOGTOSTDERR} \
 	    --v=${KUBE_LOG_LEVEL} \
             --master=${KUBE_MASTER}
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target

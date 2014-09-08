@@ -17,7 +17,7 @@
 
 Name:		kubernetes
 Version:	0.1
-Release:	0.2.1.git%{shortcommit}%{?dist}
+Release:	0.2.2.git%{shortcommit}%{?dist}
 Summary:	Kubernetes container management
 License:	ASL 2.0
 URL:		https://github.com/GoogleCloudPlatform/kubernetes
@@ -153,6 +153,9 @@ getent passwd kube >/dev/null || useradd -r -g kube -d / -s /sbin/nologin \
 %systemd_postun
 
 %changelog
+* Mon Sep 08 2014 Eric Paris <eparis@redhat.com>
+- make services restart automatically on error
+
 * Sat Sep 06 2014 Eric Paris <eparis@redhat.com - 0.1-0.1.0.git6ebe69a8
 - Bump to upstream 6ebe69a8751508c11d0db4dceb8ecab0c2c7314a
 
