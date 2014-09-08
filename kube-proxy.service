@@ -1,5 +1,8 @@
 [Unit]
 Description=Kubernetes Proxy
+# the proxy crashes if etcd isn't reachable.
+# https://github.com/GoogleCloudPlatform/kubernetes/issues/1206
+After=network.target
 
 [Service]
 EnvironmentFile=/etc/kubernetes/config
