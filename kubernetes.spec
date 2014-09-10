@@ -1,7 +1,7 @@
 #debuginfo not supported with Go
 %global debug_package	%{nil}
 %global import_path	github.com/GoogleCloudPlatform/kubernetes
-%global commit		6ebe69a8751508c11d0db4dceb8ecab0c2c7314a
+%global commit		60d4770127d22e51c53e74ca94c3639702924bd2
 %global shortcommit	%(c=%{commit}; echo ${c:0:7})
 
 #binaries which should be called kube-*
@@ -17,8 +17,8 @@
 %global _checkshell	/bin/bash
 
 Name:		kubernetes
-Version:	0.1
-Release:	0.4.git%{shortcommit}%{?dist}
+Version:	0.2
+Release:	0.1.git%{shortcommit}%{?dist}
 Summary:	Kubernetes container management
 License:	ASL 2.0
 URL:		https://github.com/GoogleCloudPlatform/kubernetes
@@ -39,12 +39,10 @@ Source22:	kube-proxy.service
 Source23:	kubelet.service
 Source24:	kube-scheduler.service
 
-Patch1:		0001-Move-default-target-list-from-build_go-to-config_go.patch
-Patch2:		0002-function-to-turn-list-of-targets-to-list-of-go-packa.patch
-Patch3:		0003-more-stuff.patch
-Patch4:		0004-Use-go-build-not-go-install-because-of-golang-issue.patch
-Patch5:		0005-Do-not-ignore-local-GOPATH-ignore-3rd-party-deps.patch
-Patch6:		0006-remove-all-third-party-software.patch
+Patch1:		0001-KUBE_EXTRA_GOPATH-to-append-to-the-GOPATH.patch
+Patch2:		0002-KUBE_NO_GODEPS-to-not-use-in-tree-godeps.patch
+Patch3:		0003-remove-all-third-party-software.patch
+
 
 Requires:	/usr/bin/docker
 Requires:	etcd
@@ -86,9 +84,14 @@ export KUBE_GIT_COMMIT=%{commit}
 export KUBE_GIT_TREE_STATE="dirty"
 export KUBE_GIT_VERSION=v%{version}
 
+export KUBE_EXTRA_GOPATH=%{gopath}
+export KUBE_NO_GODEPS="true"
+
 . hack/config-go.sh
+
+kube::setup_go_environment
+
 version_ldflags=$(kube::version_ldflags)
-export GOPATH=${KUBE_TARGET}:%{gopath}
 
 targets=($(kube::default_build_targets))
 binaries=($(kube::binaries_from_targets "${targets[@]}"))
@@ -103,7 +106,9 @@ for binary in ${binaries[@]}; do
 done
 
 %check
-export GOPATH=%{gopath}
+export KUBE_EXTRA_GOPATH=%{gopath}
+export KUBE_NO_GODEPS="true"
+
 echo "******Testing the go code******"
 hack/test-go.sh
 echo "******Testing the commands******"
@@ -154,6 +159,9 @@ getent passwd kube >/dev/null || useradd -r -g kube -d / -s /sbin/nologin \
 %systemd_postun
 
 %changelog
+* Wed Sep 10 2014 Eric Paris <eparis@redhat.com - 0.2-0.1.git60d4770
+- Bump to upstream 60d4770127d22e51c53e74ca94c3639702924bd2
+
 * Mon Sep 08 2014 Lokesh Mandvekar <lsm5@fedoraproject.org> - 0.1-0.4.git6ebe69a
 - prefer autosetup instead of setup (revert setup change in 0-0.3.git)
 https://fedoraproject.org/wiki/Autosetup_packaging_draft
