@@ -11,6 +11,11 @@
 #all of the above
 %global binaries	%{prefixed_binaries} %{nonprefixed_binaries}
 
+#I really need this, otherwise "version_ldflags=$(kube::version_ldflags)"
+# does not work
+%global _buildshell    /bin/bash
+%global _checkshell	/bin/bash
+
 Name:		kubernetes
 Version:	0.1
 Release:	0.4.git%{shortcommit}%{?dist}
