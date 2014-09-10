@@ -18,12 +18,13 @@
 
 Name:		kubernetes
 Version:	0.2
-Release:	0.1.git%{shortcommit}%{?dist}
+Release:	0.2.git%{shortcommit}%{?dist}
 Summary:	Kubernetes container management
 License:	ASL 2.0
 URL:		https://github.com/GoogleCloudPlatform/kubernetes
 ExclusiveArch:	x86_64
 Source0:	https://github.com/GoogleCloudPlatform/kubernetes/archive/%{commit}/kubernetes-%{shortcommit}.tar.gz
+Source1:	kubecfg.bash
 
 #config files
 Source10:	config
@@ -125,6 +126,10 @@ for bin in %{nonprefixed_binaries}; do
   install -p -m 755 _output/go/bin/${bin} %{buildroot}%{_bindir}/${bin}
 done
 
+# install the bash completion
+install -d -m 0755 %{buildroot}%{_datadir}/bash-completion/completions/
+install -T %{SOURCE1} %{buildroot}%{_datadir}/bash-completion/completions/kubecfg
+
 # install config files
 install -d -m 0755 %{buildroot}%{_sysconfdir}/%{name}
 install -m 644 -t %{buildroot}%{_sysconfdir}/%{name} %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} %{SOURCE15}
@@ -138,6 +143,7 @@ install -m 0644 -t %{buildroot}%{_unitdir} %{SOURCE20} %{SOURCE21} %{SOURCE22} %
 %{_bindir}/*
 %{_unitdir}/*.service
 %dir %{_sysconfdir}/%{name}
+%{_datadir}/bash-completion/completions/*
 %config(noreplace) %{_sysconfdir}/%{name}/config
 %config(noreplace) %{_sysconfdir}/%{name}/apiserver
 %config(noreplace) %{_sysconfdir}/%{name}/controller-manager
@@ -159,6 +165,9 @@ getent passwd kube >/dev/null || useradd -r -g kube -d / -s /sbin/nologin \
 %systemd_postun
 
 %changelog
+* Wed Sep 10 2014 Eric Paris <eparis@redhat.com - 0.2-0.2.git60d4770
+- Add bash completions
+
 * Wed Sep 10 2014 Eric Paris <eparis@redhat.com - 0.2-0.1.git60d4770
 - Bump to upstream 60d4770127d22e51c53e74ca94c3639702924bd2
 
