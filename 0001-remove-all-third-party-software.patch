@@ -1,7 +1,7 @@
-From ba120cfbafd43afacff0b85de70fc45be0d53b00 Mon Sep 17 00:00:00 2001
+From a6112eb44a02ee88167582e94baf8aab3a044816 Mon Sep 17 00:00:00 2001
 From: Eric Paris <eparis@redhat.com>
 Date: Thu, 21 Aug 2014 13:55:27 -0400
-Subject: [PATCH 3/3] remove all third party software
+Subject: [PATCH] remove all third party software
 
 ---
  Godeps/Godeps.json                                 |    88 -
