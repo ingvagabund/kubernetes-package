@@ -15,7 +15,7 @@ new file mode 100644
 index 0000000..0000051
 --- /dev/null
 +++ b/init/cadvisor.service
-@@ -0,0 +1,19 @@
+@@ -0,0 +1,17 @@
 +[Unit]
 +Description=cAdvisor
 +
@@ -23,12 +23,10 @@ index 0000000..0000051
 +EnvironmentFile=/etc/sysconfig/cadvisor
 +ExecStart=/usr/bin/cadvisor \
 +	--docker=${CADVISOR_DOCKER_ENDPOINT} \
-+	--history_duration=${CADVISOR_HISTORY_DURATION} \
 +	--port=${CADVISOR_PORT} \
 +	--samples=${CADVISOR_SAMPLES} \
 +	--storage_driver=${CADVISOR_STORAGE_DRIVER} \
 +	--storage_driver_host=${CADVISOR_STORAGE_DRIVER_HOST} \
-+	--storage_driver_name=${CADVISOR_STORAGE_DRIVER_NAME} \
 +	--storage_driver_password=${CADVISOR_STORAGE_DRIVER_PASSWORD} \
 +	--storage_driver_secure=${CADVISOR_STORAGE_DRIVER_SECURE} \
 +	--storage_driver_user=${CADVISOR_STORAGE_DRIVER_USER}
@@ -40,7 +38,7 @@ new file mode 100644
 index 0000000..9a3593e
 --- /dev/null
 +++ b/sysconfig/cadvisor
-@@ -0,0 +1,49 @@
+@@ -0,0 +1,41 @@
 +# config options for cAdvisor
 +#
 +#
@@ -48,10 +46,6 @@ index 0000000..9a3593e
 +# Docker endpoint to connect to
 +# Default: unix:///var/run/docker.sock
 +CADVISOR_DOCKER_ENDPOINT="unix:///var/run/docker.sock"
-+
-+# Number of seconds of container history to keep
-+# Default: 60 seconds
-+CADVISOR_HISTORY_DURATION="60"
 +
 +# Port to listen on
 +# Default: 8080
@@ -74,10 +68,6 @@ index 0000000..9a3593e
 +# Storage driver host
 +# Default: localhost:8086"
 +CADVISOR_STORAGE_DRIVER_HOST="localhost:8086"
-+
-+# Storage driver name
-+# Default: cadvisor
-+CADVISOR_STORAGE_DRIVER_NAME="cadvisor"
 +
 +# Storage driver password
 +# Default: root

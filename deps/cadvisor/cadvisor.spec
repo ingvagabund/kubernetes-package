@@ -2,7 +2,7 @@
 %global provider_tld	com
 %global project		google
 %global repo		cadvisor
-%global commit		17b0ec576bcbeb321c133e4378dee1e500c9850d
+%global commit		9d158c3d66e8e6d14cfeb1d73695ab18dbc744e8
 
 %global import_path	%{provider}.%{provider_tld}/%{project}/%{repo}
 %global gopath		%{_datadir}/gocode
@@ -10,26 +10,27 @@
 %global debug_package	%{nil}
 
 Name:		%{repo}
-Version:        0.2.0
-Release:        3.git%{shortcommit}%{?dist}
-Summary:        Analyzes resource usage and performance characteristics of running containers.
-License:        ASL2.0
-URL:            https://%{import_path}
-Source0:        https://%{import_path}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
-Patch0:         0001-add-systemd-unit-file-sysconfig.patch
-BuildRequires:  docker-io-pkg-devel
-BuildRequires:  systemd
-BuildRequires:  golang
-BuildRequires:  golang(github.com/docker/libcontainer)
-BuildRequires:  golang(github.com/fsouza/go-dockerclient)
-BuildRequires:  golang(github.com/coreos/go-systemd)
-BuildRequires:  golang(github.com/godbus/dbus)
-BuildRequires:  golang(github.com/kr/text)
-BuildRequires:  golang(github.com/kr/pretty)
-BuildRequires:  golang(github.com/influxdb/influxdb/client)
-BuildRequires:  golang(github.com/stretchr/testify)
-BuildRequires:  golang(github.com/stretchr/objx)
-ExclusiveArch:  x86_64 
+Version:	0.3.0
+Release:	0.1.git%{shortcommit}%{?dist}
+Summary:	Analyzes resource usage and performance characteristics of running containers.
+License:	ASL2.0
+URL:		https://%{import_path}
+Source0:	https://%{import_path}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
+Patch0:		0001-add-systemd-unit-file-sysconfig.patch
+BuildRequires:	docker-io-pkg-devel
+BuildRequires:	systemd
+BuildRequires:	golang
+BuildRequires:	golang(github.com/docker/libcontainer)
+BuildRequires:	golang(github.com/fsouza/go-dockerclient)
+BuildRequires:	golang(github.com/coreos/go-systemd)
+BuildRequires:	golang(github.com/godbus/dbus)
+BuildRequires:	golang(github.com/kr/text)
+BuildRequires:	golang(github.com/kr/pretty)
+BuildRequires:	golang(github.com/influxdb/influxdb/client)
+BuildRequires:	golang(github.com/stretchr/testify)
+BuildRequires:	golang(github.com/stretchr/objx)
+BuildRequires:	golang(github.com/golang/glog)
+ExclusiveArch:	x86_64 
 
 %description
 %{summary}
@@ -48,39 +49,39 @@ be added. cAdvisor's container abstraction is based on lmctfy's so containers ar
 inherently nested hierarchically.
 
 %package devel
-Requires:       golang
-Summary:        enables Go programs to comfortably encode and decode YAML values
-Provides:       golang(%{import_path}) = %{version}-%{release}
-Provides:       golang(%{import_path}/advice) = %{version}-%{release}
-Provides:       golang(%{import_path}/advice/interface) = %{version}-%{release}
-Provides:       golang(%{import_path}/api) = %{version}-%{release}
-Provides:       golang(%{import_path}/client) = %{version}-%{release}
-Provides:       golang(%{import_path}/container) = %{version}-%{release}
-Provides:       golang(%{import_path}/container/docker) = %{version}-%{release}
-Provides:       golang(%{import_path}/container/libcontainer) = %{version}-%{release}
-Provides:       golang(%{import_path}/container/raw) = %{version}-%{release}
-Provides:       golang(%{import_path}/deploy) = %{version}-%{release}
-Provides:       golang(%{import_path}/info) = %{version}-%{release}
-Provides:       golang(%{import_path}/manager) = %{version}-%{release}
-Provides:       golang(%{import_path}/pages) = %{version}-%{release}
-Provides:       golang(%{import_path}/pages/static) = %{version}-%{release}
-Provides:       golang(%{import_path}/sampling) = %{version}-%{release}
-Provides:       golang(%{import_path}/storage) = %{version}-%{release}
-Provides:       golang(%{import_path}/storage/cache) = %{version}-%{release}
-Provides:       golang(%{import_path}/storage/influxdb) = %{version}-%{release}
-Provides:       golang(%{import_path}/storage/memory) = %{version}-%{release}
-Provides:       golang(%{import_path}/utils) = %{version}-%{release}
-BuildRequires:  docker-io-pkg-devel
-BuildRequires:  golang
-BuildRequires:  golang(github.com/docker/libcontainer)
-BuildRequires:  golang(github.com/fsouza/go-dockerclient)
-BuildRequires:  golang(github.com/coreos/go-systemd)
-BuildRequires:  golang(github.com/godbus/dbus)
-BuildRequires:  golang(github.com/kr/text)
-BuildRequires:  golang(github.com/kr/pretty)
-BuildRequires:  golang(github.com/influxdb/influxdb/client)
-BuildRequires:  golang(github.com/stretchr/testify)
-BuildRequires:  golang(github.com/stretchr/objx)
+Requires:	golang
+Summary:	enables Go programs to comfortably encode and decode YAML values
+Provides:	golang(%{import_path}) = %{version}-%{release}
+Provides:	golang(%{import_path}/advice) = %{version}-%{release}
+Provides:	golang(%{import_path}/advice/interface) = %{version}-%{release}
+Provides:	golang(%{import_path}/api) = %{version}-%{release}
+Provides:	golang(%{import_path}/client) = %{version}-%{release}
+Provides:	golang(%{import_path}/container) = %{version}-%{release}
+Provides:	golang(%{import_path}/container/docker) = %{version}-%{release}
+Provides:	golang(%{import_path}/container/libcontainer) = %{version}-%{release}
+Provides:	golang(%{import_path}/container/raw) = %{version}-%{release}
+Provides:	golang(%{import_path}/deploy) = %{version}-%{release}
+Provides:	golang(%{import_path}/info) = %{version}-%{release}
+Provides:	golang(%{import_path}/manager) = %{version}-%{release}
+Provides:	golang(%{import_path}/pages) = %{version}-%{release}
+Provides:	golang(%{import_path}/pages/static) = %{version}-%{release}
+Provides:	golang(%{import_path}/sampling) = %{version}-%{release}
+Provides:	golang(%{import_path}/storage) = %{version}-%{release}
+Provides:	golang(%{import_path}/storage/cache) = %{version}-%{release}
+Provides:	golang(%{import_path}/storage/influxdb) = %{version}-%{release}
+Provides:	golang(%{import_path}/storage/memory) = %{version}-%{release}
+Provides:	golang(%{import_path}/utils) = %{version}-%{release}
+BuildRequires:	docker-io-pkg-devel
+BuildRequires:	golang
+BuildRequires:	golang(github.com/docker/libcontainer)
+BuildRequires:	golang(github.com/fsouza/go-dockerclient)
+BuildRequires:	golang(github.com/coreos/go-systemd)
+BuildRequires:	golang(github.com/godbus/dbus)
+BuildRequires:	golang(github.com/kr/text)
+BuildRequires:	golang(github.com/kr/pretty)
+BuildRequires:	golang(github.com/influxdb/influxdb/client)
+BuildRequires:	golang(github.com/stretchr/testify)
+BuildRequires:	golang(github.com/stretchr/objx)
 
 %description devel
 %{summary}
@@ -188,6 +189,9 @@ done
 %{gopath}/src/%{import_path}/utils/*
 
 %changelog
+* Thu Sep 11 2014 Eric Paris <eparis@redhat.com - 0.2.0-4.git9d158c3d
+- Bump to upstream 9d158c3d66e8e6d14cfeb1d73695ab18dbc744e8
+
 * Wed Aug 20 2014 Eric Paris <eparis@redhat.com - 0.2.0-2
 - Bump to upstream 17b0ec576bcbeb321c133e4378dee1e500c9850d
 
