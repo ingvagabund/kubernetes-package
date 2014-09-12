@@ -15,7 +15,7 @@ new file mode 100644
 index 0000000..0000051
 --- /dev/null
 +++ b/init/cadvisor.service
-@@ -0,0 +1,17 @@
+@@ -0,0 +1,18 @@
 +[Unit]
 +Description=cAdvisor
 +
@@ -29,7 +29,8 @@ index 0000000..0000051
 +	--storage_driver_host=${CADVISOR_STORAGE_DRIVER_HOST} \
 +	--storage_driver_password=${CADVISOR_STORAGE_DRIVER_PASSWORD} \
 +	--storage_driver_secure=${CADVISOR_STORAGE_DRIVER_SECURE} \
-+	--storage_driver_user=${CADVISOR_STORAGE_DRIVER_USER}
++	--storage_driver_user=${CADVISOR_STORAGE_DRIVER_USER} \
++	--logtostderr=${CADVISOR_LOG_TO_STDERR}
 +
 +[Install]
 +WantedBy=multi-user.target
@@ -38,7 +39,7 @@ new file mode 100644
 index 0000000..9a3593e
 --- /dev/null
 +++ b/sysconfig/cadvisor
-@@ -0,0 +1,41 @@
+@@ -0,0 +1,45 @@
 +# config options for cAdvisor
 +#
 +#
@@ -80,6 +81,10 @@ index 0000000..9a3593e
 +# Storage driver user
 +# Default: root
 +CADVISOR_STORAGE_DRIVER_USER="root"
++
++# Log to stderr (and thus to journal)
++# Default: false
++CADVISOR_LOG_TO_STDERR="true"
 -- 
 1.9.3
 

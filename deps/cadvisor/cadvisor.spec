@@ -11,7 +11,7 @@
 
 Name:		%{repo}
 Version:	0.3.0
-Release:	0.1.git%{shortcommit}%{?dist}
+Release:	0.2.git%{shortcommit}%{?dist}
 Summary:	Analyzes resource usage and performance characteristics of running containers.
 License:	ASL2.0
 URL:		https://%{import_path}
@@ -189,7 +189,10 @@ done
 %{gopath}/src/%{import_path}/utils/*
 
 %changelog
-* Thu Sep 11 2014 Eric Paris <eparis@redhat.com - 0.2.0-4.git9d158c3d
+* Fri Sep 12 2014 Eric Paris <eparis@redhat.com - 0.3.0-2.git9d158c3d
+- Log to stderr (and thus journal) by default
+
+* Thu Sep 11 2014 Eric Paris <eparis@redhat.com - 0.3.0-1.git9d158c3d
 - Bump to upstream 9d158c3d66e8e6d14cfeb1d73695ab18dbc744e8
 
 * Wed Aug 20 2014 Eric Paris <eparis@redhat.com - 0.2.0-2
