@@ -1,7 +1,7 @@
 #debuginfo not supported with Go
 %global debug_package	%{nil}
 %global import_path	github.com/GoogleCloudPlatform/kubernetes
-%global commit		cc7999c00a40df21bd3b5e85ecea3b817377b231
+%global commit		24b5b7e8d3a8af1eecf4db40c204e3c15ae955ba
 %global shortcommit	%(c=%{commit}; echo ${c:0:7})
 
 #binaries which should be called kube-*
@@ -18,7 +18,7 @@
 
 Name:		kubernetes
 Version:	0.2
-Release:	0.4.git%{shortcommit}%{?dist}
+Release:	0.5.git%{shortcommit}%{?dist}
 Summary:	Kubernetes container management
 License:	ASL 2.0
 URL:		https://github.com/GoogleCloudPlatform/kubernetes
@@ -71,6 +71,9 @@ BuildRequires:	golang(github.com/stretchr/testify)
 BuildRequires:	golang(gopkg.in/v1/yaml)
 BuildRequires:	golang(github.com/google/cadvisor)
 BuildRequires:	golang(code.google.com/p/gcfg)
+BuildRequires:	golang(github.com/mitchellh/goamz/aws)
+BuildRequires:	golang(github.com/mitchellh/goamz/ec2)
+BuildRequires:	golang(github.com/vaughan0/go-ini)
 
 %description
 %{summary}
@@ -165,6 +168,9 @@ getent passwd kube >/dev/null || useradd -r -g kube -d / -s /sbin/nologin \
 %systemd_postun
 
 %changelog
+* Mon Sep 15 2014 Eric Paris <eparis@redhat.com - 0.2-0.5.git24b5b7e
+- Bump to upstream 24b5b7e8d3a8af1eecf4db40c204e3c15ae955ba
+
 * Thu Sep 11 2014 Eric Paris <eparis@redhat.com - 0.2-0.3.gitcc7999c
 - Bump to upstream cc7999c00a40df21bd3b5e85ecea3b817377b231
 
