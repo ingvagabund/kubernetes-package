@@ -1,7 +1,7 @@
 #debuginfo not supported with Go
 %global debug_package	%{nil}
 %global import_path	github.com/GoogleCloudPlatform/kubernetes
-%global commit		24b5b7e8d3a8af1eecf4db40c204e3c15ae955ba
+%global commit		ac8ee45f4fc4579b3ed65faafa618de9c0f8fb26
 %global shortcommit	%(c=%{commit}; echo ${c:0:7})
 
 #binaries which should be called kube-*
@@ -18,7 +18,7 @@
 
 Name:		kubernetes
 Version:	0.2
-Release:	0.5.git%{shortcommit}%{?dist}
+Release:	0.8.git%{shortcommit}%{?dist}
 Summary:	Kubernetes container management
 License:	ASL 2.0
 URL:		https://github.com/GoogleCloudPlatform/kubernetes
@@ -42,7 +42,12 @@ Source24:	kube-scheduler.service
 
 Patch1:		0001-remove-all-third-party-software.patch
 
-Requires:	/usr/bin/docker
+%if 0%{?fedora} >= 21 || 0%{?rhel}
+Requires:	docker
+%else
+Requires:	docker-io
+%endif
+
 Requires:	etcd
 Requires:	cadvisor
 
@@ -168,6 +173,12 @@ getent passwd kube >/dev/null || useradd -r -g kube -d / -s /sbin/nologin \
 %systemd_postun
 
 %changelog
+* Wed Sep 17 2014 Eric Paris <eparis@redhat.com - 0.2-0.8.gitac8ee45
+- Try to intelligently determine the deps
+
+* Wed Sep 17 2014 Eric Paris <eparis@redhat.com - 0.2-0.7.gitac8ee45
+- Bump to upstream ac8ee45f4fc4579b3ed65faafa618de9c0f8fb26
+
 * Mon Sep 15 2014 Eric Paris <eparis@redhat.com - 0.2-0.5.git24b5b7e
 - Bump to upstream 24b5b7e8d3a8af1eecf4db40c204e3c15ae955ba
 
