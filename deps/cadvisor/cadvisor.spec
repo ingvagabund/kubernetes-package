@@ -2,7 +2,7 @@
 %global provider_tld	com
 %global project		google
 %global repo		cadvisor
-%global commit		9d158c3d66e8e6d14cfeb1d73695ab18dbc744e8
+%global commit		58e019028ddbb2d716b50f7621788054e3720611
 
 %global import_path	%{provider}.%{provider_tld}/%{project}/%{repo}
 %global gopath		%{_datadir}/gocode
@@ -11,7 +11,7 @@
 
 Name:		%{repo}
 Version:	0.3.0
-Release:	0.2.git%{shortcommit}%{?dist}
+Release:	0.3.git%{shortcommit}%{?dist}
 Summary:	Analyzes resource usage and performance characteristics of running containers.
 License:	ASL2.0
 URL:		https://%{import_path}
@@ -30,6 +30,8 @@ BuildRequires:	golang(github.com/influxdb/influxdb/client)
 BuildRequires:	golang(github.com/stretchr/testify)
 BuildRequires:	golang(github.com/stretchr/objx)
 BuildRequires:	golang(github.com/golang/glog)
+BuildRequires:	golang(code.google.com/p/goauth2)
+BuildRequires:	golang(code.google.com/p/google-api-go-client)
 ExclusiveArch:	x86_64 
 
 %description
@@ -52,8 +54,6 @@ inherently nested hierarchically.
 Requires:	golang
 Summary:	enables Go programs to comfortably encode and decode YAML values
 Provides:	golang(%{import_path}) = %{version}-%{release}
-Provides:	golang(%{import_path}/advice) = %{version}-%{release}
-Provides:	golang(%{import_path}/advice/interface) = %{version}-%{release}
 Provides:	golang(%{import_path}/api) = %{version}-%{release}
 Provides:	golang(%{import_path}/client) = %{version}-%{release}
 Provides:	golang(%{import_path}/container) = %{version}-%{release}
@@ -61,11 +61,11 @@ Provides:	golang(%{import_path}/container/docker) = %{version}-%{release}
 Provides:	golang(%{import_path}/container/libcontainer) = %{version}-%{release}
 Provides:	golang(%{import_path}/container/raw) = %{version}-%{release}
 Provides:	golang(%{import_path}/deploy) = %{version}-%{release}
+Provides:	golang(%{import_path}/healthz) = %{version}-%{release}
 Provides:	golang(%{import_path}/info) = %{version}-%{release}
 Provides:	golang(%{import_path}/manager) = %{version}-%{release}
 Provides:	golang(%{import_path}/pages) = %{version}-%{release}
 Provides:	golang(%{import_path}/pages/static) = %{version}-%{release}
-Provides:	golang(%{import_path}/sampling) = %{version}-%{release}
 Provides:	golang(%{import_path}/storage) = %{version}-%{release}
 Provides:	golang(%{import_path}/storage/cache) = %{version}-%{release}
 Provides:	golang(%{import_path}/storage/influxdb) = %{version}-%{release}
@@ -103,6 +103,8 @@ inherently nested hierarchically.
 %setup -n %{name}-%{commit} -q
 
 %patch0 -p1
+
+rm -rf Godeps
 
 %build
 mkdir _build
@@ -142,10 +144,10 @@ install -p -m0644 init/%{name}.service %{buildroot}%{_prefix}/lib/systemd/system
 install -d -p %{buildroot}/%{gopath}/src/%{import_path}/
 cp -av *.go %{buildroot}/%{gopath}/src/%{import_path}/
 
-for d in advice api client container deploy info manager pages sampling storage \
-          utils
+for d in api client container deploy healthz info manager pages storage \
+	utils 
 do
-    cp -av $d %{buildroot}/%{gopath}/src/%{import_path}/
+  cp -av $d %{buildroot}/%{gopath}/src/%{import_path}/
 done
 
 %post
@@ -170,25 +172,28 @@ done
 %dir %attr(755,root,root) %{gopath}/src/%{import_path}/client
 %dir %attr(755,root,root) %{gopath}/src/%{import_path}/container
 %dir %attr(755,root,root) %{gopath}/src/%{import_path}/deploy
+%dir %attr(755,root,root) %{gopath}/src/%{import_path}/healthz
 %dir %attr(755,root,root) %{gopath}/src/%{import_path}/info
 %dir %attr(755,root,root) %{gopath}/src/%{import_path}/manager
 %dir %attr(755,root,root) %{gopath}/src/%{import_path}/pages
-%dir %attr(755,root,root) %{gopath}/src/%{import_path}/sampling
 %dir %attr(755,root,root) %{gopath}/src/%{import_path}/storage
 %dir %attr(755,root,root) %{gopath}/src/%{import_path}/utils
-%{gopath}/src/%{import_path}/*
+%{gopath}/src/%{import_path}/*.go
 %{gopath}/src/%{import_path}/api/*
 %{gopath}/src/%{import_path}/client/*
 %{gopath}/src/%{import_path}/container/*
 %{gopath}/src/%{import_path}/deploy/*
+%{gopath}/src/%{import_path}/healthz/*
 %{gopath}/src/%{import_path}/info/*
 %{gopath}/src/%{import_path}/manager/*
 %{gopath}/src/%{import_path}/pages/*
-%{gopath}/src/%{import_path}/sampling/*
 %{gopath}/src/%{import_path}/storage/*
 %{gopath}/src/%{import_path}/utils/*
 
 %changelog
+* Thu Sep 18 2014 Eric Paris <eparis@redhat.com - 0.3.0-0.3.git58e01902
+- Bump to upstream 58e019028ddbb2d716b50f7621788054e3720611
+
 * Fri Sep 12 2014 Eric Paris <eparis@redhat.com - 0.3.0-2.git9d158c3d
 - Log to stderr (and thus journal) by default
 
