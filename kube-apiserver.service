@@ -12,7 +12,8 @@ ExecStart=/usr/bin/kube-apiserver \
             --address=${KUBE_API_ADDRESS} \
             --port=${KUBE_API_PORT} \
             --machines=${MINION_ADDRESSES} \
-	    --minion_port=${MINION_PORT}
+	    --minion_port=${MINION_PORT} \
+	    --allow_privileged=${KUBE_ALLOW_PRIV}
 Restart=on-failure
 
 [Install]
