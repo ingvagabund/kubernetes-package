@@ -2,7 +2,7 @@
 %global provider_tld	com
 %global project		google
 %global repo		cadvisor
-%global commit		58e019028ddbb2d716b50f7621788054e3720611
+%global commit		5a6d06c02600b1e57e55a9d9f71dbac1bfc9fe6c
 
 %global import_path	%{provider}.%{provider_tld}/%{project}/%{repo}
 %global gopath		%{_datadir}/gocode
@@ -10,8 +10,8 @@
 %global debug_package	%{nil}
 
 Name:		%{repo}
-Version:	0.3.0
-Release:	0.3.git%{shortcommit}%{?dist}
+Version:	0.4.0
+Release:	0.0.git%{shortcommit}%{?dist}
 Summary:	Analyzes resource usage and performance characteristics of running containers.
 License:	ASL2.0
 URL:		https://%{import_path}
@@ -82,6 +82,7 @@ BuildRequires:	golang(github.com/kr/pretty)
 BuildRequires:	golang(github.com/influxdb/influxdb/client)
 BuildRequires:	golang(github.com/stretchr/testify)
 BuildRequires:	golang(github.com/stretchr/objx)
+BuildRequires:	golang(code.google.com/p/go.exp/inotify)
 
 %description devel
 %{summary}
@@ -191,6 +192,9 @@ done
 %{gopath}/src/%{import_path}/utils/*
 
 %changelog
+* Mon Sep 22 2014 Eric Paris <eparis@redhat.com - 0.4.0-0.0.git5a6d06c0
+- Bump to upstream 5a6d06c02600b1e57e55a9d9f71dbac1bfc9fe6c
+
 * Thu Sep 18 2014 Eric Paris <eparis@redhat.com - 0.3.0-0.3.git58e01902
 - Bump to upstream 58e019028ddbb2d716b50f7621788054e3720611
 
