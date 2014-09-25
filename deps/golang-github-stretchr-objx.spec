@@ -1,13 +1,12 @@
 %global debug_package   %{nil}
 %global import_path     github.com/stretchr/objx
-%global gopath          %{_datadir}/gocode
 %global commit          cbeaeb16a013161a98496fad62933b1d21786672
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-github-stretchr-objx
 Version:        0
-Release:        0.1.git%{shortcommit}%{?dist}
-Summary:        Go package for dealing with maps, slices, JSON and other data. 
+Release:        0.2.git%{shortcommit}%{?dist}
+Summary:        Go package for dealing with maps, slices, JSON and other data
 License:        MIT
 URL:            http://godoc.org/%{import_path}
 Source0:        https://%{import_path}/archive/%{commit}/objx-%{shortcommit}.tar.gz
@@ -20,9 +19,10 @@ quickly get access to data within the map, without having to worry too much
 about type assertions, missing data, default values etc. 
 
 %package devel
-BuildRequires:  golang
-Requires:       golang
-Summary:        Go package for dealing with maps, slices, JSON and other data. 
+BuildRequires:  golang >= 1.2.1-3
+Requires:       golang >= 1.2.1-3
+Requires:       golang(github.com/stretchr/testify)
+Summary:        Go package for dealing with maps, slices, JSON and other data
 Provides:       golang(%{import_path}) = %{version}-%{release}
 
 %description devel
@@ -32,22 +32,30 @@ quickly get access to data within the map, without having to worry too much
 about type assertions, missing data, default values etc. 
 
 %prep
-%setup -n objx-%{commit}
+%setup -q -n objx-%{commit}
 
 %build
 
 %install
 install -d %{buildroot}/%{gopath}/src/%{import_path}
-cp -av *.go %{buildroot}/%{gopath}/src/%{import_path}/
-cp -av codegen %{buildroot}/%{gopath}/src/%{import_path}/
+cp -pav *.go %{buildroot}/%{gopath}/src/%{import_path}/
+cp -pav codegen %{buildroot}/%{gopath}/src/%{import_path}/
+
+%check
+# as long as there is circular dependency between 
+# golang-github-stretchr-testify and golang-github-stretchr-objx
+# there can not by test
 
 %files devel
 %doc LICENSE.md README.md
-%dir %attr(755,root,root) %{gopath}/src/%{import_path}
-%dir %attr(755,root,root) %{gopath}/src/%{import_path}/codegen
+%dir %{gopath}/src/%{import_path}
+%dir %{gopath}/src/%{import_path}/codegen
 %{gopath}/src/%{import_path}/*
 %{gopath}/src/%{import_path}/codegen/*
 
 %changelog
+* Mon Sep 15 2014 Lokesh Mandvekar <lsm5@fedoraproject.org> - 0-0.2.gitcbeaeb1
+- do not redefine gopath
+
 * Wed Aug 06 2014 Adam Miller <maxamillion@fedoraproject.org> - 0-0.1.gitcbeaeb1
 - First package for Fedora.

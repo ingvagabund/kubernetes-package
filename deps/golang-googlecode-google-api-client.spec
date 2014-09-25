@@ -1,198 +1,187 @@
+%global debug_package   %{nil}
 %global import_path     code.google.com/p/google-api-go-client
-%global rev             0923cdda5b82
+%global rev             e1c259484b495133836706f46319f5897f1e9bf6
+%global shortrev        %(r=%{rev}; echo ${r:0:12})
 
 Name:           golang-googlecode-google-api-client
 Version:        0
-Release:        0.1.alpha.hg%{rev}%{?dist}
-Summary:        Go libraries for "new style" Google APIs.
+Release:        0.2.alpha.hg%{shortrev}%{?dist}
+Summary:        Go libraries for "new style" Google APIs
 License:        BSD
 URL:            http://%{import_path}
 
-### 
-# No official release yet, Source0 generated with the following:
-#
-#   hg clone https://code.google.com/p/google-api-go-client/
-#   cd google-api-go-client
-#   hg parents # Obtain changeset revision (0923cdda5b82 in this case)
-#   hg archive -t tgz ../google-api-go-client-0923cdda5b82.tar.gz
-Source0:        google-api-go-client-%{rev}.tar.gz
-%if 0%{?fedora} >= 19
+Source0:        https://google-api-go-client.googlecode.com/archive/%{rev}.tar.gz
 BuildArch:      noarch
-%else
-ExclusiveArch:  %{go_arches}
-%endif
-BuildRequires:  golang
-BuildRequires:  golang(code.google.com/p/goauth2/oauth)
 
 %description
 %{summary}
 
 %package devel
-Requires:       golang
-Requires:       golang(code.google.com/p/goauth2/oauth)
-Summary:        Go libraries for "new style" Google APIs.
-Provides:       golang(%{import_path}) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/adexchangebuyer) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/adexchangebuyer/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/adexchangebuyer/v1.1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/adexchangebuyer/v1.2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/adexchangebuyer/v1.3) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/adexchangeseller) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/adexchangeseller/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/adexchangeseller/v1.1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/admin) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/admin/directory_v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/admin/email_migration_v2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/admin/reports_v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/adsense) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/adsense/v1.2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/adsense/v1.3) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/adsense/v1.4) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/adsensehost) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/adsensehost/v4.1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/analytics) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/analytics/v2.4) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/analytics/v3) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/androidpublisher) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/androidpublisher/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/androidpublisher/v1.1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/appsactivity) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/appsactivity/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/appstate) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/appstate/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/audit) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/audit/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/autoscaler) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/autoscaler/v1beta2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/bigquery) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/bigquery/v2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/blogger) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/blogger/v2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/blogger/v3) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/books) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/books/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/calendar) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/calendar/v3) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/civicinfo) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/civicinfo/us_v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/civicinfo/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/cloudmonitoring) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/cloudmonitoring/v2beta1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/compute) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/compute/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/content) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/content/v2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/coordinate) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/coordinate/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/customsearch) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/customsearch/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/datastore) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/datastore/v1beta1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/datastore/v1beta2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/dfareporting) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/dfareporting/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/dfareporting/v1.1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/dfareporting/v1.2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/dfareporting/v1.3) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/discovery) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/discovery/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/dns) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/dns/v1beta1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/doubleclickbidmanager) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/doubleclickbidmanager/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/doubleclicksearch) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/doubleclicksearch/v2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/drive) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/drive/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/drive/v2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/freebase) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/freebase/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/freebase/v1sandbox) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/freebase/v1-sandbox) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/games) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/games/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/gamesmanagement) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/gamesmanagement/v1management) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/gan) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/gan/v1beta) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/genomics) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/genomics/v1beta) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/gmail) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/gmail/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/googleapi) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/googleapi/transport) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/google-api-go-generator) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/google-api-go-generator/testdata) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/groupsmigration) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/groupsmigration/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/identitytoolkit) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/identitytoolkit/v3) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/licensing) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/licensing/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/manager) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/manager/v1beta2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/mapsengine) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/mapsengine/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/mirror) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/mirror/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/oauth2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/oauth2/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/oauth2/v2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/orkut) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/orkut/v2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/pagespeedonline) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/pagespeedonline/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/plus) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/plus/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/plusdomains) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/plusdomains/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/prediction) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/prediction/v1.2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/prediction/v1.3) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/prediction/v1.4) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/prediction/v1.5) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/prediction/v1.6) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/pubsub) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/pubsub/v1beta1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/qpexpress) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/qpexpress/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/replicapool) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/replicapool/v1beta1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/reseller) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/reseller/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/reseller/v1sandbox) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/resourceviews) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/resourceviews/v1beta1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/siteverification) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/siteverification/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/spectrum) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/spectrum/v1explorer) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/sqladmin) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/sqladmin/v1beta1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/sqladmin/v1beta3) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/storage) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/storage/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/storage/v1beta1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/storage/v1beta2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/taskqueue) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/taskqueue/v1beta1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/taskqueue/v1beta2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/tasks) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/tasks/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/translate) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/translate/v2) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/urlshortener) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/urlshortener/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/webfonts) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/webfonts/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/youtube) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/youtube/v3) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/youtubeanalytics) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/youtubeanalytics/v1) = %{version}-%{release}
-Provides:       golang(%{import_path}/google-api-go-client/youtubeanalytics/v1beta1) = %{version}-%{release}
-BuildRequires:  golang
+BuildRequires:  golang >= 1.2.1-3
 BuildRequires:  golang(code.google.com/p/goauth2/oauth)
+Requires:       golang >= 1.2.1-3
+Requires:       golang(code.google.com/p/goauth2/oauth)
+Summary:        Go libraries for "new style" Google APIs
+Provides:       golang(%{import_path}) = %{version}-%{release}
+Provides:       golang(%{import_path}/adexchangebuyer) = %{version}-%{release}
+Provides:       golang(%{import_path}/adexchangebuyer/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/adexchangebuyer/v1.1) = %{version}-%{release}
+Provides:       golang(%{import_path}/adexchangebuyer/v1.2) = %{version}-%{release}
+Provides:       golang(%{import_path}/adexchangebuyer/v1.3) = %{version}-%{release}
+Provides:       golang(%{import_path}/adexchangeseller) = %{version}-%{release}
+Provides:       golang(%{import_path}/adexchangeseller/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/adexchangeseller/v1.1) = %{version}-%{release}
+Provides:       golang(%{import_path}/admin) = %{version}-%{release}
+Provides:       golang(%{import_path}/admin/directory_v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/admin/email_migration_v2) = %{version}-%{release}
+Provides:       golang(%{import_path}/admin/reports_v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/adsense) = %{version}-%{release}
+Provides:       golang(%{import_path}/adsense/v1.2) = %{version}-%{release}
+Provides:       golang(%{import_path}/adsense/v1.3) = %{version}-%{release}
+Provides:       golang(%{import_path}/adsense/v1.4) = %{version}-%{release}
+Provides:       golang(%{import_path}/adsensehost) = %{version}-%{release}
+Provides:       golang(%{import_path}/adsensehost/v4.1) = %{version}-%{release}
+Provides:       golang(%{import_path}/analytics) = %{version}-%{release}
+Provides:       golang(%{import_path}/analytics/v2.4) = %{version}-%{release}
+Provides:       golang(%{import_path}/analytics/v3) = %{version}-%{release}
+Provides:       golang(%{import_path}/androidpublisher) = %{version}-%{release}
+Provides:       golang(%{import_path}/androidpublisher/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/androidpublisher/v1.1) = %{version}-%{release}
+Provides:       golang(%{import_path}/appsactivity) = %{version}-%{release}
+Provides:       golang(%{import_path}/appsactivity/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/appstate) = %{version}-%{release}
+Provides:       golang(%{import_path}/appstate/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/audit) = %{version}-%{release}
+Provides:       golang(%{import_path}/audit/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/autoscaler) = %{version}-%{release}
+Provides:       golang(%{import_path}/autoscaler/v1beta2) = %{version}-%{release}
+Provides:       golang(%{import_path}/bigquery) = %{version}-%{release}
+Provides:       golang(%{import_path}/bigquery/v2) = %{version}-%{release}
+Provides:       golang(%{import_path}/blogger) = %{version}-%{release}
+Provides:       golang(%{import_path}/blogger/v2) = %{version}-%{release}
+Provides:       golang(%{import_path}/blogger/v3) = %{version}-%{release}
+Provides:       golang(%{import_path}/books) = %{version}-%{release}
+Provides:       golang(%{import_path}/books/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/calendar) = %{version}-%{release}
+Provides:       golang(%{import_path}/calendar/v3) = %{version}-%{release}
+Provides:       golang(%{import_path}/civicinfo) = %{version}-%{release}
+Provides:       golang(%{import_path}/civicinfo/us_v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/civicinfo/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/cloudmonitoring) = %{version}-%{release}
+Provides:       golang(%{import_path}/cloudmonitoring/v2beta1) = %{version}-%{release}
+Provides:       golang(%{import_path}/compute) = %{version}-%{release}
+Provides:       golang(%{import_path}/compute/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/content) = %{version}-%{release}
+Provides:       golang(%{import_path}/content/v2) = %{version}-%{release}
+Provides:       golang(%{import_path}/coordinate) = %{version}-%{release}
+Provides:       golang(%{import_path}/coordinate/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/customsearch) = %{version}-%{release}
+Provides:       golang(%{import_path}/customsearch/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/datastore) = %{version}-%{release}
+Provides:       golang(%{import_path}/datastore/v1beta1) = %{version}-%{release}
+Provides:       golang(%{import_path}/datastore/v1beta2) = %{version}-%{release}
+Provides:       golang(%{import_path}/dfareporting) = %{version}-%{release}
+Provides:       golang(%{import_path}/dfareporting/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/dfareporting/v1.1) = %{version}-%{release}
+Provides:       golang(%{import_path}/dfareporting/v1.2) = %{version}-%{release}
+Provides:       golang(%{import_path}/dfareporting/v1.3) = %{version}-%{release}
+Provides:       golang(%{import_path}/discovery) = %{version}-%{release}
+Provides:       golang(%{import_path}/discovery/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/dns) = %{version}-%{release}
+Provides:       golang(%{import_path}/dns/v1beta1) = %{version}-%{release}
+Provides:       golang(%{import_path}/doubleclickbidmanager) = %{version}-%{release}
+Provides:       golang(%{import_path}/doubleclickbidmanager/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/doubleclicksearch) = %{version}-%{release}
+Provides:       golang(%{import_path}/doubleclicksearch/v2) = %{version}-%{release}
+Provides:       golang(%{import_path}/drive) = %{version}-%{release}
+Provides:       golang(%{import_path}/drive/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/drive/v2) = %{version}-%{release}
+Provides:       golang(%{import_path}/freebase) = %{version}-%{release}
+Provides:       golang(%{import_path}/freebase/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/freebase/v1sandbox) = %{version}-%{release}
+Provides:       golang(%{import_path}/freebase/v1-sandbox) = %{version}-%{release}
+Provides:       golang(%{import_path}/games) = %{version}-%{release}
+Provides:       golang(%{import_path}/games/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/gamesmanagement) = %{version}-%{release}
+Provides:       golang(%{import_path}/gamesmanagement/v1management) = %{version}-%{release}
+Provides:       golang(%{import_path}/gan) = %{version}-%{release}
+Provides:       golang(%{import_path}/gan/v1beta) = %{version}-%{release}
+Provides:       golang(%{import_path}/genomics) = %{version}-%{release}
+Provides:       golang(%{import_path}/genomics/v1beta) = %{version}-%{release}
+Provides:       golang(%{import_path}/gmail) = %{version}-%{release}
+Provides:       golang(%{import_path}/gmail/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/googleapi) = %{version}-%{release}
+Provides:       golang(%{import_path}/googleapi/internal/uritemplates) = %{version}-%{release}
+Provides:       golang(%{import_path}/googleapi/transport) = %{version}-%{release}
+Provides:       golang(%{import_path}/google-api-go-generator) = %{version}-%{release}
+Provides:       golang(%{import_path}/google-api-go-generator/testdata) = %{version}-%{release}
+Provides:       golang(%{import_path}/groupsmigration) = %{version}-%{release}
+Provides:       golang(%{import_path}/groupsmigration/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/identitytoolkit) = %{version}-%{release}
+Provides:       golang(%{import_path}/identitytoolkit/v3) = %{version}-%{release}
+Provides:       golang(%{import_path}/licensing) = %{version}-%{release}
+Provides:       golang(%{import_path}/licensing/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/manager) = %{version}-%{release}
+Provides:       golang(%{import_path}/manager/v1beta2) = %{version}-%{release}
+Provides:       golang(%{import_path}/mapsengine) = %{version}-%{release}
+Provides:       golang(%{import_path}/mapsengine/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/mirror) = %{version}-%{release}
+Provides:       golang(%{import_path}/mirror/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/oauth2) = %{version}-%{release}
+Provides:       golang(%{import_path}/oauth2/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/oauth2/v2) = %{version}-%{release}
+Provides:       golang(%{import_path}/orkut) = %{version}-%{release}
+Provides:       golang(%{import_path}/orkut/v2) = %{version}-%{release}
+Provides:       golang(%{import_path}/pagespeedonline) = %{version}-%{release}
+Provides:       golang(%{import_path}/pagespeedonline/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/plus) = %{version}-%{release}
+Provides:       golang(%{import_path}/plus/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/plusdomains) = %{version}-%{release}
+Provides:       golang(%{import_path}/plusdomains/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/prediction) = %{version}-%{release}
+Provides:       golang(%{import_path}/prediction/v1.2) = %{version}-%{release}
+Provides:       golang(%{import_path}/prediction/v1.3) = %{version}-%{release}
+Provides:       golang(%{import_path}/prediction/v1.4) = %{version}-%{release}
+Provides:       golang(%{import_path}/prediction/v1.5) = %{version}-%{release}
+Provides:       golang(%{import_path}/prediction/v1.6) = %{version}-%{release}
+Provides:       golang(%{import_path}/pubsub) = %{version}-%{release}
+Provides:       golang(%{import_path}/pubsub/v1beta1) = %{version}-%{release}
+Provides:       golang(%{import_path}/qpexpress) = %{version}-%{release}
+Provides:       golang(%{import_path}/qpexpress/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/replicapool) = %{version}-%{release}
+Provides:       golang(%{import_path}/replicapool/v1beta1) = %{version}-%{release}
+Provides:       golang(%{import_path}/reseller) = %{version}-%{release}
+Provides:       golang(%{import_path}/reseller/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/reseller/v1sandbox) = %{version}-%{release}
+Provides:       golang(%{import_path}/resourceviews) = %{version}-%{release}
+Provides:       golang(%{import_path}/resourceviews/v1beta1) = %{version}-%{release}
+Provides:       golang(%{import_path}/siteverification) = %{version}-%{release}
+Provides:       golang(%{import_path}/siteverification/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/spectrum) = %{version}-%{release}
+Provides:       golang(%{import_path}/spectrum/v1explorer) = %{version}-%{release}
+Provides:       golang(%{import_path}/sqladmin) = %{version}-%{release}
+Provides:       golang(%{import_path}/sqladmin/v1beta1) = %{version}-%{release}
+Provides:       golang(%{import_path}/sqladmin/v1beta3) = %{version}-%{release}
+Provides:       golang(%{import_path}/storage) = %{version}-%{release}
+Provides:       golang(%{import_path}/storage/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/storage/v1beta1) = %{version}-%{release}
+Provides:       golang(%{import_path}/storage/v1beta2) = %{version}-%{release}
+Provides:       golang(%{import_path}/taskqueue) = %{version}-%{release}
+Provides:       golang(%{import_path}/taskqueue/v1beta1) = %{version}-%{release}
+Provides:       golang(%{import_path}/taskqueue/v1beta2) = %{version}-%{release}
+Provides:       golang(%{import_path}/tasks) = %{version}-%{release}
+Provides:       golang(%{import_path}/tasks/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/translate) = %{version}-%{release}
+Provides:       golang(%{import_path}/translate/v2) = %{version}-%{release}
+Provides:       golang(%{import_path}/urlshortener) = %{version}-%{release}
+Provides:       golang(%{import_path}/urlshortener/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/webfonts) = %{version}-%{release}
+Provides:       golang(%{import_path}/webfonts/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/youtube) = %{version}-%{release}
+Provides:       golang(%{import_path}/youtube/v3) = %{version}-%{release}
+Provides:       golang(%{import_path}/youtubeanalytics) = %{version}-%{release}
+Provides:       golang(%{import_path}/youtubeanalytics/v1) = %{version}-%{release}
+Provides:       golang(%{import_path}/youtubeanalytics/v1beta1) = %{version}-%{release}
 
 %description devel
 %{summary}
@@ -211,15 +200,16 @@ Getting started documentation:
 
 %prep
 
-%setup -n google-api-go-client-%{rev} -q
+%setup -n google-api-go-client-%{shortrev} -q
 
 %build
 
 %install
 install -d %{buildroot}/%{gopath}/src/%{import_path}
+mv googleapi/internal/uritemplates/LICENSE LICENSE-googleapi-internal-uritemplates
 for d in ./*; do
     if [[ -d $d ]]; then
-        cp -av $d %{buildroot}/%{gopath}/src/%{import_path}/
+        cp -pav $d %{buildroot}/%{gopath}/src/%{import_path}/
     fi
 done
 
@@ -228,20 +218,22 @@ GOPATH=%{buildroot}/%{gopath} go test %{import_path}/googleapi
 GOPATH=%{buildroot}/%{gopath} go test %{import_path}/google-api-go-generator
 
 %files devel
-%defattr(-,root,root,-)
 %doc AUTHORS CONTRIBUTORS LICENSE Makefile NOTES README TODO
-%dir %attr(755,root,root) %{gopath}
-%dir %attr(755,root,root) %{gopath}/src
-%dir %attr(755,root,root) %{gopath}/src/code.google.com
-%dir %attr(755,root,root) %{gopath}/src/code.google.com/p
-%dir %attr(755,root,root) %{gopath}/src/%{import_path}
+%doc LICENSE-googleapi-internal-uritemplates
+%dir %{gopath}/src/%{import_path}
+%dir %{gopath}/src/%{import_path}/*
 %{gopath}/src/%{import_path}/examples/gopher.png
 %{gopath}/src/%{import_path}/lib/codereview/codereview.cfg
 %{gopath}/src/%{import_path}/*/*.go
 %{gopath}/src/%{import_path}/*/*/*.go
+%{gopath}/src/%{import_path}/*/*/*/*.go
 %{gopath}/src/%{import_path}/*/*/*.json
 %{gopath}/src/%{import_path}/*/*/*.want
 
 %changelog
+* Mon Sep 15 2014 Lokesh Mandvekar <lsm5@fedoraproject.org> - 0-0.2.alpha.hge1c259484b49
+- update to e1c259484b495133836706f46319f5897f1e9bf6
+- preserve timestamps of copied files
+
 * Mon Aug 04 2014 Adam Miller <maxamillion@fedoraproject.org> - 0-0.1.alpha.hg0923cdda5b82
 - First package for Fedora.
